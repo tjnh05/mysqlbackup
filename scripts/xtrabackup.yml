@@ -3,7 +3,7 @@
 # written by bodhi wang
 # bodwang@deloitte.com.cn
 # Dec 2017
-- hosts: r4host4
+- hosts: mysqldbserv
   become: yes
   become_user: root
 
