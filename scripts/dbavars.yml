@@ -1,0 +1,6 @@
+backup_user: backup
+backup_password: "536b43778f5883433969"
+
+base_dir:   /data/backups/full/
+datadir: "/data/mysql"
+expired_days: 15

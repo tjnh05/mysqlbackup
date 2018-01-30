@@ -1,0 +1,30 @@
+---
+# Install softwares in remote MYSQL database host.
+# written by bodhi wang
+# bodwang@deloitte.com.cn
+# Dec 2017
+- hosts: r4host4
+  become: yes
+  become_user: root
+
+
+  tasks:
+   - name: bare include (free-form)
+     include_vars: dbavars.yml
+
+   - name: Install mysql-community-libs-compat-5.7.17-1.el7.x86_64.rpm
+     yum:
+       name: "https://downloads.mysql.com/archives/get/file/mysql-community-libs-compat-5.7.17-1.el7.x86_64.rpm"
+       state: present
+     when: mysql_compat is defined and mysql_compat == "yes"
+
+   - name: Install percona-release repo.
+     yum:
+       name: "http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm"
+       state: present
+   - name: Install XtraBackup
+     yum: name=percona-xtrabackup-24 state=present
+   - name: Install rsync
+     yum: name=rsync state=present
+   - name: Install MySQL-python 
+     yum: name=MySQL-python state=present

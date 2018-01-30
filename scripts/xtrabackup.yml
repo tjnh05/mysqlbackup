@@ -1,0 +1,42 @@
+---
+# Physical and hot backup MYSQL database.
+# written by bodhi wang
+# bodwang@deloitte.com.cn
+# Dec 2017
+- hosts: r4host4
+  become: yes
+  become_user: root
+
+
+  tasks:
+   - name: bare include (free-form)
+     include_vars: dbavars.yml
+
+   - name: Create data file directory for backup
+     file:
+       path: "{{ base_dir }}"
+       recurse: yes
+       owner: root
+       group: root
+       mode:  0750
+
+   - name: Create backup of database
+     command: 
+       innobackupex --user={{backup_user}} --password='{{backup_password }}' --no-timestamp {{base_dir}}{{backup_date}}
+       creates="{{base_dir}}{{backup_date}}/xtrabackup_checkpoints"
+
+   - name: Prepare backup
+     command: 
+       innobackupex --apply-log {{base_dir}}{{backup_date}}
+       creates="{{base_dir}}{{backup_date}}/xtrabackup_checkpoints"
+
+   - name: Transfer backup to remote host
+     synchronize:
+       mode: pull
+       src:  "{{base_dir}}{{backup_date}}/"
+       dest: "{{base_dir}}{{backup_date}}/"
+       checksum: yes
+
+   - name: Remove expired backup
+     shell: 
+       find {{base_dir}} -mtime +{{expired_days}} -type d -print0 | xargs -0 rm -rf

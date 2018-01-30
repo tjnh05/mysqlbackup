@@ -1,0 +1,23 @@
+---
+# Create backup user in remote MYSQL database.
+# written by bodhi wang
+# bodwang@deloitte.com.cn
+# Dec 2017
+- hosts: r4host4
+  become: yes
+  become_user: root
+
+  vars_files:
+   - tdbvars.yml
+   - dbavars.yml
+
+  tasks:
+   - name: Create backup user for database backup
+     mysql_user:
+       user: "{{ backup_user }}"
+       password: "{{ backup_password }}"
+       host: localhost
+       priv: "*.*:RELOAD,LOCK TABLES,PROCESS,REPLICATION CLIENT"
+       state: present
+       login_user: root
+       login_password: "{{mysql_root_password}}"

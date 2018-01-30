@@ -1,0 +1,35 @@
+---
+# Restore remote MYSQL database.
+# written by bodhi wang
+# bodwang@deloitte.com.cn
+# Dec 2017
+- hosts: r4host4
+  become: yes
+  become_user: root
+
+
+  tasks:
+   - name: bare include (free-form)
+     include_vars: dbavars.yml
+
+   - name: Stop mysqld service
+     service: name=mysqld state=stopped
+
+   - name: Copy data directory
+     command: "cp -rf {{datadir}} {{datadir}}.bak"
+
+   - name: Clean data directory
+     file: path="{{datadir}}/" state=absent
+
+   - name: Restore database
+     command: "innobackupex --force-non-empty-directories --copy-back {{base_dir}}{{backup_date}}"
+
+   - name: Change owner and group to mysql after database has been restored.
+     file:
+       path: "{{datadir}}"
+       recurse: yes
+       owner: mysql
+       group: mysql
+   
+   - name: Start mysqld service
+     service: name=mysqld state=started
