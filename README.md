@@ -55,7 +55,7 @@
    ansible_password修改为ansible_user对应用户的密码
    
    ```
-   备注：
+   **备注：**
    
    如果是通过无密码ssh访问方式，则需要修改/etc/ansible/ansible.cfg, 并设置私钥文件。
    示例如下：
