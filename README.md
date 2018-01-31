@@ -40,7 +40,8 @@
 
 
 - 配置
-  - Ansible 配置
+  配置包括ansible的配置，修改配置文件以配置目标mysql数据库的root用户密码，备份用户名和密码，数据库数据目录， 备份基础目录，以及备份数据过期天数。
+  - Ansible 配置
     
     修改配置文件/etc/ansible/hosts, 增加mysql数据库服务器配置。
     示例如下：
@@ -103,60 +104,54 @@
     >
     >expired_days: 15
 
-  - 安装软件到目标MYSQL主机
+## 安装软件到目标MYSQL主机
     
-    在MYSQL主机上安装软件Xtrabackup，rsync， MYSQL-python。需要连互联网。
+在MYSQL主机上安装软件Xtrabackup，rsync， MYSQL-python。需要连互联网。
     
-    在本机目录~/mysqlbackup/scripts下运行如下命令：
+在本机目录~/mysqlbackup/scripts下运行如下命令：
  
-    >ansible-playbook  installremote.yml
+>ansible-playbook  installremote.yml
 
-    如果安装报错，则运行如下命令以安装：
-    
-    >ansible-playbook  installremote.yml --extra-vars="mysql_compat=yes"
+如果安装报错，则运行如下命令以安装：
+   
+>ansible-playbook  installremote.yml --extra-vars="mysql_compat=yes"
 
-  - 创建备份用户
+## 创建备份用户
   
-    如果备份用户在目标mysql数据库上已存在，则忽略本步骤。
+如果备份用户在目标mysql数据库上已存在，则忽略本步骤。
     
-    >ansible-playbook  backupuser.yml
+>ansible-playbook  backupuser.yml
 
 ## 备份，回传备份，并清理过期的备份
 
-  在本机的部署目录~/mysqlbackup/scripts运行如下命令：
+在本机的部署目录~/mysqlbackup/scripts运行如下命令：
     
-  >ansible-playbook  xtrabackup.yml --extra-vars="backup_date=$(date +%Y%m%d)"
+>ansible-playbook  xtrabackup.yml --extra-vars="backup_date=$(date +%Y%m%d)"
 
-  回传的备份放在/data/backups/full/目录下。
+回传的备份放在/data/backups/full/目录下。
   
-  备份的过期天数在配置文件dbavars.yml里由配置项expired_days设置，单位天。
+备份的过期天数在配置文件dbavars.yml里由配置项expired_days设置，单位天。
   
-  目标mysql主机过期的备份将被删除。
+目标mysql主机过期的备份将被删除。
 
 ## 定时执行备份
   
-  如果需要定时备份数据库，可以把备份命令放在crontab里由cron定时执行。
+如果需要定时备份数据库，可以把备份命令放在crontab里由cron定时执行。
   
-  假设是每天凌晨两点运行，则运行命令crontab -e，并增加如下内容：
+假设是每天凌晨两点运行，则运行命令crontab -e，并增加如下内容：
     
-  >PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/ibutils/bin:/root/bin:/root/scripts
-  >
-  >MAILTO=root@localhost
-  >
-  >0 2 * * * /root/mysqlbackup/scripts/xtrabackup.sh
+>PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/ibutils/bin:/root/bin:/root/scripts
+>
+>MAILTO=root@localhost
+>
+>0 2 * * * /root/mysqlbackup/scripts/xtrabackup.sh
 
 ## 恢复 
-  注意：本过程只在做数据库恢复时才使用。
+
+注意：本过程只在做数据库恢复时才使用。
   
-  在本机的部署目录~/mysqlbackup/scripts
+在本机的部署目录~/mysqlbackup/scripts
   
-  运行如下命令，其中20171123需替换成相应的全量备份日期。
+运行如下命令，其中20171123需替换成相应的全量备份日期。
   
-  >ansible-playbook  restore.yml --extra-vars="backup_date=20171123"
-
-
-
-
-
-
-
+>ansible-playbook  restore.yml --extra-vars="backup_date=20171123"
