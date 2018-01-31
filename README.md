@@ -10,6 +10,7 @@
 ## 先决条件
 - 本软件运行在centos 7, 并且ansible已安装， sshd服务已启动。
 - 目标mysql数据库服务器的操作系统也是centos 7，sshd服务已启动。
+- 对本机和目标mysql数据服务器都有超级用户权限。
 
 
 ## 部署过程
@@ -48,11 +49,11 @@
     >
     >10.13.1.103  ansible_user=root ansible_password=password
 
-    把IP地址10.13.1.103修改成目标mysql数据库服务器的IP地址或域名，
+    把IP地址10.13.1.103修改成目标mysql数据库服务器的IP地址或域名
     
-    ansible_user可以设置为root或其他通过运行sudo命令自动切换到root的用户， 
+    ansible_user设置为root 
     
-    ansible_password修改为ansible_user对应用户的密码。
+    ansible_password修改为ansible_user对应用户的密码
     
     >备注：
     >
