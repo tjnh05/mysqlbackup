@@ -59,10 +59,10 @@
    
    如果是通过无密码ssh访问方式，则需要修改/etc/ansible/ansible.cfg, 并设置私钥文件。
    示例如下：
-   >private_key_file=/root/.ssh/id_rsa
+   private_key_file=/root/.ssh/id_rsa
    
    如果RSA密钥对没有，可以运行如下命令：
-   >ssl-keygen -t rsa
+   ssl-keygen -t rsa
    
    具体过程请参考以下链接：
    https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s3-openssh-rsa-keys-v2.html
