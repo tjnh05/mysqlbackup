@@ -2,25 +2,25 @@
 
 使用ansible和xtrabackup对目标mysql数据库进行物理热备份，备份后把备份数据从目标mysql数据库主机回传到本机。
 
-## 约定
+## 1. 约定
 
 - 本机： 安装了ansible的控制主机， 也是备份机。
 - 远程mysql数据库：需要备份的mysql数据库，也叫目标mysql数据库。
 
-## 先决条件
+## 2. 先决条件
 - 本软件运行在centos 7, 并且ansible已安装， sshd服务已启动。
 - 目标mysql数据库服务器的操作系统也是centos 7，sshd服务已启动。
 - 对本机和目标mysql数据服务器都有超级用户权限。
 
 
-## 部署过程
+## 3. 部署过程
 在ansible所在主机的root用户的HOME目录下运行如下命令：
 
-### 1. 下载软件
+### 3.1. 下载软件
 
    >git clone https://github.com/tjnh05/mysqlbackup.git
 
-### 2. 创建目录和修改权限
+### 3.2. 创建目录和修改权限
 
   下面命令创建数据备份目录/data/backups/full和日志目录/var/log/xtrabackup。出于安全考虑，需要设置相关目录和文件的访问权限。
   
@@ -39,11 +39,11 @@
   >chmod 0755 /var/log/xtrabackup
 
 
-### 3. 配置
+### 3.3. 配置
 
   配置包括ansible的配置，修改配置文件以配置目标mysql数据库的root用户密码，备份用户名和密码，数据库数据目录， 备份基础目录，以及备份数据过期天数。
  
-#### 3.1 Ansible 配置
+#### 3.3.1 Ansible 配置
     
    修改配置文件/etc/ansible/hosts, 增加mysql数据库服务器配置。
    示例如下：
@@ -74,13 +74,13 @@
    >
    >https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s3-openssh-rsa-keys-v2.html
 
-#### 3.2 设置目标mysql数据库root用户密码
+#### 3.3.2 设置目标mysql数据库root用户密码
     
    修改配置文件~/mysqlbackup/scripts/tdbvars.yml，设置目标mysql数据库的root用户，用于后续创建备份用户，如果备份用户已存在，可以不修改该文件。
 
    >mysql_root_password: "8f2370778b445915157a"
 
-#### 3.3 设置目标mysql数据库备份用户和密码
+#### 3.3.3 设置目标mysql数据库备份用户和密码
     
    修改配置文件~/mysqlbackup/scripts/dbvars.yml。
 
@@ -106,7 +106,7 @@
    >
    >expired_days: 15
 
-### 4. 安装软件到目标MYSQL主机
+### 3.4. 安装软件到目标MYSQL主机
     
 在MYSQL主机上安装软件Xtrabackup，rsync， MYSQL-python。需要连互联网。
     
@@ -118,13 +118,13 @@
    
 >ansible-playbook  installremote.yml --extra-vars="mysql_compat=yes"
 
-### 5. 创建备份用户
+### 3.5. 创建备份用户
   
 如果备份用户在目标mysql数据库上已存在，则忽略本步骤。
     
 >ansible-playbook  backupuser.yml
 
-## 备份，回传备份，并清理过期的备份
+## 4. 备份，回传备份，并清理过期的备份
 
 在本机的部署目录~/mysqlbackup/scripts运行如下命令：
     
@@ -136,7 +136,7 @@
   
 目标mysql主机过期的备份将被删除。
 
-## 定时执行备份
+## 5. 定时执行备份
   
 如果需要定时备份数据库，可以把备份命令放在crontab里由cron定时执行。
   
@@ -148,7 +148,7 @@
 >
 >0 2 * * * /root/mysqlbackup/scripts/xtrabackup.sh
 
-## 恢复 
+## 6. 恢复 
 
 注意：本过程只在做数据库恢复时才使用。
   
