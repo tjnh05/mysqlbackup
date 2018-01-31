@@ -106,7 +106,7 @@
    >
    >expired_days: 15
 
-## 安装软件到目标MYSQL主机
+### 4. 安装软件到目标MYSQL主机
     
 在MYSQL主机上安装软件Xtrabackup，rsync， MYSQL-python。需要连互联网。
     
@@ -118,7 +118,7 @@
    
 >ansible-playbook  installremote.yml --extra-vars="mysql_compat=yes"
 
-## 创建备份用户
+### 5. 创建备份用户
   
 如果备份用户在目标mysql数据库上已存在，则忽略本步骤。
     
