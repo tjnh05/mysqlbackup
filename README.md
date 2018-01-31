@@ -8,7 +8,7 @@
 - 远程mysql数据库：需要备份的mysql数据库，也叫目标mysql数据库。
 
 ## 2. 先决条件
-- 本软件运行在centos 7, 并且ansible已安装， sshd服务已启动。
+- 本软件运行在centos 7, 并且ansible 2.4+, Python 2.7 已安装， sshd服务已启动。
 - 目标mysql数据库服务器的操作系统也是centos 7，sshd服务已启动。
 - 对本机和目标mysql数据服务器都有超级用户权限。
 
