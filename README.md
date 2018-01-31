@@ -40,69 +40,71 @@
 
 
 - 配置
+
   配置包括ansible的配置，修改配置文件以配置目标mysql数据库的root用户密码，备份用户名和密码，数据库数据目录， 备份基础目录，以及备份数据过期天数。
-  - Ansible 配置
+ 
+ - Ansible 配置
     
-    修改配置文件/etc/ansible/hosts, 增加mysql数据库服务器配置。
-    示例如下：
+   修改配置文件/etc/ansible/hosts, 增加mysql数据库服务器配置。
+   示例如下：
 
-    >[mysqldbserv]
-    >
-    >10.13.1.103  ansible_user=root ansible_password=password
+   >[mysqldbserv]
+   >
+   >10.13.1.103  ansible_user=root ansible_password=password
 
-    把IP地址10.13.1.103修改成目标mysql数据库服务器的IP地址或域名
+   把IP地址10.13.1.103修改成目标mysql数据库服务器的IP地址或域名
     
-    ansible_user设置为root 
+   ansible_user设置为root 
     
-    ansible_password修改为ansible_user对应用户的密码
+   ansible_password修改为ansible_user对应用户的密码
     
-    >备注：
-    >
-    >如果是通过无密码ssh访问方式，则需要修改/etc/ansible/ansible.cfg, 并设置私钥文件。
-    >
-    >示例如下：
-    >
-    >private_key_file=/root/.ssh/id_rsa
-    >
-    >如果RSA密钥对没有，可以运行如下命令：
-    >
-    >ssl-keygen -t rsa
-    >
-    >具体过程请参考以下链接：
-    >
-    >https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s3-openssh-rsa-keys-v2.html
+   >备注：
+   >
+   >如果是通过无密码ssh访问方式，则需要修改/etc/ansible/ansible.cfg, 并设置私钥文件。
+   >
+   >示例如下：
+   >
+   >private_key_file=/root/.ssh/id_rsa
+   >
+   >如果RSA密钥对没有，可以运行如下命令：
+   >
+   >ssl-keygen -t rsa
+   >
+   >具体过程请参考以下链接：
+   >
+   >https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s3-openssh-rsa-keys-v2.html
 
-  - 设置目标mysql数据库root用户密码
+ - 设置目标mysql数据库root用户密码
     
-    修改配置文件~/mysqlbackup/scripts/tdbvars.yml，设置目标mysql数据库的root用户，用于后续创建备份用户，如果备份用户已存在，可以不修改该文件。
+   修改配置文件~/mysqlbackup/scripts/tdbvars.yml，设置目标mysql数据库的root用户，用于后续创建备份用户，如果备份用户已存在，可以不修改该文件。
 
-    >mysql_root_password: "8f2370778b445915157a"
+   >mysql_root_password: "8f2370778b445915157a"
 
-  - 设置目标mysql数据库备份用户和密码
+ - 设置目标mysql数据库备份用户和密码
     
-    修改配置文件~/mysqlbackup/scripts/dbvars.yml。
+   修改配置文件~/mysqlbackup/scripts/dbvars.yml。
 
-    >#目标mysql数据库的备份用户
+   >#目标mysql数据库的备份用户
     
-    >backup_user: backup
+   >backup_user: backup
     
-    >#备份用户的密码
+   >#备份用户的密码
     
-    >backup_password: "536b43778f5883433969"
+   >backup_password: "536b43778f5883433969"
 
-    >#存储数据库备份的基础目录
-    >
-    >#该目录在本机和目标MYSQL主机上是相同的
-    >
-    >base_dir:   /data/backups/full/
-    >
-    >#目标MYSQL数据库的数据目录
-    >
-    >datadir: "/data/mysql"
-    >
-    >#备份保存天数，陈旧的备份将被删除
-    >
-    >expired_days: 15
+   >#存储数据库备份的基础目录
+   >
+   >#该目录在本机和目标MYSQL主机上是相同的
+   >
+   >base_dir:   /data/backups/full/
+   >
+   >#目标MYSQL数据库的数据目录
+   >
+   >datadir: "/data/mysql"
+   >
+   >#备份保存天数，陈旧的备份将被删除
+   >
+   >expired_days: 15
 
 ## 安装软件到目标MYSQL主机
     
