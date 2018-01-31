@@ -133,7 +133,7 @@ ansible-playbook  xtrabackup.yml --extra-vars="backup_date=$(date +%Y%m%d)"
   
 如果需要定时备份数据库，可以把备份命令放在crontab里由cron定时执行。
   
-假设是每天凌晨两点运行，则运行命令crontab -e，并增加如下内容：
+假设是每天凌晨两点运行，则运行命令'crontab -e'，并增加如下内容：
 ```    
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/ibutils/bin:/root/bin:/root/scripts
 MAILTO=root@localhost
