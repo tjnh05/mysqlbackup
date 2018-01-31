@@ -18,7 +18,7 @@
 
 ### 3.1. 下载软件
 
-  >git clone https://github.com/tjnh05/mysqlbackup.git
+  >git clone https://github.com/tjnh05/mysqlbackup.git
 
 ### 3.2. 创建目录和修改权限
 
