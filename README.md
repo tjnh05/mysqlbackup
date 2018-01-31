@@ -16,11 +16,11 @@
 ## 部署过程
 在ansible所在主机的root用户的HOME目录下运行如下命令：
 
-- 下载软件
+- 1. 下载软件
 
    >git clone https://github.com/tjnh05/mysqlbackup.git
 
-- 创建目录和修改权限
+- 2. 创建目录和修改权限
 
   下面命令创建数据备份目录/data/backups/full和日志目录/var/log/xtrabackup。出于安全考虑，需要设置相关目录和文件的访问权限。
   
@@ -39,11 +39,11 @@
   >chmod 0755 /var/log/xtrabackup
 
 
-- 配置
+- 3. 配置
 
   配置包括ansible的配置，修改配置文件以配置目标mysql数据库的root用户密码，备份用户名和密码，数据库数据目录， 备份基础目录，以及备份数据过期天数。
  
- - Ansible 配置
+ - 3.1 Ansible 配置
     
    修改配置文件/etc/ansible/hosts, 增加mysql数据库服务器配置。
    示例如下：
@@ -74,13 +74,13 @@
    >
    >https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s3-openssh-rsa-keys-v2.html
 
- - 设置目标mysql数据库root用户密码
+ - 3.2 设置目标mysql数据库root用户密码
     
    修改配置文件~/mysqlbackup/scripts/tdbvars.yml，设置目标mysql数据库的root用户，用于后续创建备份用户，如果备份用户已存在，可以不修改该文件。
 
    >mysql_root_password: "8f2370778b445915157a"
 
- - 设置目标mysql数据库备份用户和密码
+ - 3.3 设置目标mysql数据库备份用户和密码
     
    修改配置文件~/mysqlbackup/scripts/dbvars.yml。
 
