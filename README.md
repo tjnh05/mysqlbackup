@@ -18,26 +18,22 @@
 
 ### 3.1. 下载软件
 
-  >git clone https://github.com/tjnh05/mysqlbackup.git
-
+  ```
+  git clone https://github.com/tjnh05/mysqlbackup.git
+  ```
+  
 ### 3.2. 创建目录和修改权限
 
   下面命令创建数据备份目录/data/backups/full和日志目录/var/log/xtrabackup。出于安全考虑，需要设置相关目录和文件的访问权限。
-  
-  >chown 0700 ~/mysqlbackup/scripts
-  >
-  >chmod 0600 ~/mysqlbackup/scripts/*.yml
-  >
-  >chmod 0700 ~/mysqlbackup/scripts/xtrabackup.sh
-  >
-  >mkdir -p /data/backups/full
-  >
-  >chmod -R 0750 /data/backups 
-  >
-  >mkdir -p /var/log/xtrabackup 
-  >
-  >chmod 0755 /var/log/xtrabackup
-
+  ```
+  chown 0700 ~/mysqlbackup/scripts && \
+  chmod 0600 ~/mysqlbackup/scripts/*.yml && \
+  chmod 0700 ~/mysqlbackup/scripts/xtrabackup.sh && \
+  mkdir -p /data/backups/full && \
+  chmod -R 0750 /data/backups && \
+  mkdir -p /var/log/xtrabackup && \
+  chmod 0755 /var/log/xtrabackup
+  ```
 
 ### 3.3. 配置
 
@@ -48,88 +44,85 @@
    修改配置文件/etc/ansible/hosts, 增加mysql数据库服务器配置。
    示例如下：
 
-   >[mysqldbserv]
-   >
-   >10.13.1.103  ansible_user=root ansible_password=password
-
+   ```
+   [mysqldbserv]
+   10.13.1.103  ansible_user=root ansible_password=password
+   ```
+   
    把IP地址10.13.1.103修改成目标mysql数据库服务器的IP地址或域名
     
    ansible_user设置为root 
-    
    ansible_password修改为ansible_user对应用户的密码
-    
-   >备注：
-   >
-   >如果是通过无密码ssh访问方式，则需要修改/etc/ansible/ansible.cfg, 并设置私钥文件。
-   >
-   >示例如下：
-   >
+   
+   ```
+   备注：
+   
+   如果是通过无密码ssh访问方式，则需要修改/etc/ansible/ansible.cfg, 并设置私钥文件。
+   示例如下：
    >private_key_file=/root/.ssh/id_rsa
-   >
-   >如果RSA密钥对没有，可以运行如下命令：
-   >
+   
+   如果RSA密钥对没有，可以运行如下命令：
    >ssl-keygen -t rsa
-   >
-   >具体过程请参考以下链接：
-   >
-   >https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s3-openssh-rsa-keys-v2.html
-
+   
+   具体过程请参考以下链接：
+   https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s3-openssh-rsa-keys-v2.html
+   ```
+   
 #### 3.3.2 设置目标mysql数据库root用户密码
     
    修改配置文件~/mysqlbackup/scripts/tdbvars.yml，设置目标mysql数据库的root用户，用于后续创建备份用户，如果备份用户已存在，可以不修改该文件。
-
-   >mysql_root_password: "8f2370778b445915157a"
-
+   ```
+   mysql_root_password: "8f2370778b445915157a"
+   ```
+   
 #### 3.3.3 设置目标mysql数据库备份用户和密码
     
    修改配置文件~/mysqlbackup/scripts/dbvars.yml。
-
-   >#目标mysql数据库的备份用户
+   ```
+   #目标mysql数据库的备份用户
+   backup_user: backup
     
-   >backup_user: backup
-    
-   >#备份用户的密码
-    
-   >backup_password: "536b43778f5883433969"
+   #备份用户的密码
+   backup_password: "536b43778f5883433969"
 
-   >#存储数据库备份的基础目录
-   >
-   >#该目录在本机和目标MYSQL主机上是相同的
-   >
-   >base_dir:   /data/backups/full/
-   >
-   >#目标MYSQL数据库的数据目录
-   >
-   >datadir: "/data/mysql"
-   >
-   >#备份保存天数，陈旧的备份将被删除
-   >
-   >expired_days: 15
-
+   #存储数据库备份的基础目录
+   #该目录在本机和目标MYSQL主机上是相同的
+   base_dir:   /data/backups/full/
+   
+   #目标MYSQL数据库的数据目录
+   datadir: "/data/mysql"
+   
+   #备份保存天数，陈旧的备份将被删除
+   xpired_days: 15
+   ```
+   
 ### 3.4. 安装软件到目标MYSQL主机
     
 在MYSQL主机上安装软件Xtrabackup，rsync， MYSQL-python。需要连互联网。
     
 在本机目录~/mysqlbackup/scripts下运行如下命令：
  
->ansible-playbook  installremote.yml
+ansible-playbook  installremote.yml
 
 如果安装报错，则运行如下命令以安装：
    
->ansible-playbook  installremote.yml --extra-vars="mysql_compat=yes"
+```
+ansible-playbook  installremote.yml --extra-vars="mysql_compat=yes"
+```
 
 ### 3.5. 创建备份用户
   
-如果备份用户在目标mysql数据库上已存在，则忽略本步骤。
-    
->ansible-playbook  backupuser.yml
+如果备份用户在目标mysql数据库上已存在，则忽略本步骤。  
+```
+ansible-playbook  backupuser.yml
+```
 
 ## 4. 备份，回传备份，并清理过期的备份
 
 在本机的部署目录~/mysqlbackup/scripts运行如下命令：
-    
->ansible-playbook  xtrabackup.yml --extra-vars="backup_date=$(date +%Y%m%d)"
-
+```    
+ansible-playbook  xtrabackup.yml --extra-vars="backup_date=$(date +%Y%m%d)"
+```
 回传的备份放在/data/backups/full/目录下。
   
 备份的过期天数在配置文件dbavars.yml里由配置项expired_days设置，单位天。
@@ -141,12 +134,11 @@
 如果需要定时备份数据库，可以把备份命令放在crontab里由cron定时执行。
   
 假设是每天凌晨两点运行，则运行命令crontab -e，并增加如下内容：
-    
->PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/ibutils/bin:/root/bin:/root/scripts
->
->MAILTO=root@localhost
->
->0 2 * * * /root/mysqlbackup/scripts/xtrabackup.sh
+```    
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/ibutils/bin:/root/bin:/root/scripts
+MAILTO=root@localhost
+0 2 * * * /root/mysqlbackup/scripts/xtrabackup.sh
+```
 
 ## 6. 恢复 
 
@@ -155,5 +147,6 @@
 在本机的部署目录~/mysqlbackup/scripts
   
 运行如下命令，其中20171123需替换成相应的全量备份日期。
-  
->ansible-playbook  restore.yml --extra-vars="backup_date=20171123"
+```  
+ansible-playbook  restore.yml --extra-vars="backup_date=20171123"
+```
