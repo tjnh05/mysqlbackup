@@ -96,7 +96,7 @@
    xpired_days: 15
    ```
    
-### 3.4. 安装软件到目标MYSQL主机
+### 3.4. 安装软件到目标mysql主机
     
 在MYSQL主机上安装软件Xtrabackup，rsync， MYSQL-python。需要连互联网。
     
