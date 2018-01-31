@@ -3,17 +3,17 @@
 使用ansible和xtrabackup对目标mysql数据库进行物理热备份，
 备份后把备份数据从目标mysql数据库主机回传到本机。
 
-# 约定
+## 约定
 
 - 本机： 安装了ansible的控制主机， 也是备份机。
 - 远程mysql数据库：需要备份的mysql数据库，也叫目标mysql数据库。
 
-# 先决条件
+## 先决条件
 - 本软件运行在centos 7, 并且ansible已安装， sshd服务已启动。
 - 目标mysql数据库服务器的操作系统也是centos 7，sshd服务已启动。
 
 
-# 部署过程
+## 部署过程
 在ansible所在主机的root用户的HOME目录下运行如下命令：
 
 - 下载软件
@@ -25,13 +25,13 @@
   下面命令创建数据备份目录/data/backups/full和日志目录/var/log/xtrabackup。
   出于安全考虑，需要设置相关目录和文件的访问权限。
   
-    chown 0700 ~/mysqlbackup/scripts &&  \
-    chmod 0600 ~/mysqlbackup/scripts/*.yml && \
-    chmod 0700 ~/mysqlbackup/scripts/xtrabackup.sh && \
-    mkdir -p /data/backups/full && \
-    chmod -R 0750 /data/backups && \ 
-    mkdir -p /var/log/xtrabackup && \
-    chmod 0755 /var/log/xtrabackup
+    *chown 0700 ~/mysqlbackup/scripts &&  \*
+    *chmod 0600 ~/mysqlbackup/scripts/*.yml && \*
+    *chmod 0700 ~/mysqlbackup/scripts/xtrabackup.sh && \*
+    *mkdir -p /data/backups/full && \*
+    *chmod -R 0750 /data/backups && \* 
+    *mkdir -p /var/log/xtrabackup && \*
+    *chmod 0755 /var/log/xtrabackup*
 
 
 - 配置
@@ -88,7 +88,7 @@ expired_days: 15
     
     ansible-playbook  backupuser.yml
 
-# 备份，回传备份，并清理过期的备份
+## 备份，回传备份，并清理过期的备份
   在本机的部署目录~/mysqlbackup/scripts运行如下命令：
     
   ansible-playbook  xtrabackup.yml --extra-vars="backup_date=$(date +%Y%m%d)"
@@ -97,7 +97,7 @@ expired_days: 15
   备份的过期天数在配置文件dbavars.yml里由配置项expired_days设置，单位天。
   目标mysql主机过期的备份将被删除。
 
-# 定时执行备份
+## 定时执行备份
   如果需要定时备份数据库，可以把备份命令放在crontab里由cron定时执行。
   假设是每天凌晨两点运行，则运行命令crontab -e，并增加如下内容：
     
@@ -105,7 +105,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/ibutils/bin:/root/bi
 MAILTO=root@localhost
 0 2 * * * /root/mysqlbackup/scripts/xtrabackup.sh
 
-# 恢复 
+## 恢复 
   注意：本过程只在做数据库恢复时才使用。
   在本机的部署目录~/mysqlbackup/scripts
   运行如下命令，其中20171123需替换成相应的全量备份日期。
