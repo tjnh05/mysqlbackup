@@ -9,17 +9,23 @@
 
 先决条件：
 1.本软件运行在centos 7, 并且ansible已安装， sshd服务已启动。
+
 2.目标mysql数据库服务器的操作系统也是centos 7，sshd服务已启动。
 
 
 部署方法：
 在ansible所在主机的root用户的HOME目录下运行如下命令：
+
 1. 下载软件
+
 git clone https://github.com/tjnh05/mysqlbackup.git
 
 2. 创建目录和修改权限
+
 下面命令创建数据备份目录/data/backups/full和日志目录/var/log/xtrabackup。
+
 出于安全考虑，需要设置相关目录和文件的访问权限。
+
 chown 0700 ~/mysqlbackup/scripts &&  \
 chmod 0600 ~/mysqlbackup/scripts/*.yml && \
 chmod 0700 ~/mysqlbackup/scripts/xtrabackup.sh && \
