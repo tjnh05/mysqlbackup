@@ -23,16 +23,16 @@
 
 - 创建目录和修改权限
 
-下面命令创建数据备份目录/data/backups/full和日志目录/var/log/xtrabackup。
-出于安全考虑，需要设置相关目录和文件的访问权限。
+  下面命令创建数据备份目录/data/backups/full和日志目录/var/log/xtrabackup。
+  出于安全考虑，需要设置相关目录和文件的访问权限。
 
-chown 0700 ~/mysqlbackup/scripts &&  \
-chmod 0600 ~/mysqlbackup/scripts/*.yml && \
-chmod 0700 ~/mysqlbackup/scripts/xtrabackup.sh && \
-mkdir -p /data/backups/full && \
-chmod -R 0750 /data/backups && \ 
-mkdir -p /var/log/xtrabackup && \
-chmod 0755 /var/log/xtrabackup
+  chown 0700 ~/mysqlbackup/scripts &&  \
+  chmod 0600 ~/mysqlbackup/scripts/*.yml && \
+  chmod 0700 ~/mysqlbackup/scripts/xtrabackup.sh && \
+  mkdir -p /data/backups/full && \
+  chmod -R 0750 /data/backups && \ 
+  mkdir -p /var/log/xtrabackup && \
+  chmod 0755 /var/log/xtrabackup
 
 - 配置
   - Ansible 配置
