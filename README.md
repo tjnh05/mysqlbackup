@@ -142,7 +142,7 @@ MAILTO=root@localhost
 
 ## 6. 恢复 
 
-注意：本过程只在做数据库恢复时才使用。
+**注意：本过程只在做数据库恢复时才使用。**
   
 在本机的部署目录~/mysqlbackup/scripts
   
