@@ -14,7 +14,7 @@
 
 
 ## 3. 部署过程
-在本机的root用户HOME目录下运行如下命令：
+在本机的root用户HOME目录/root/下，以root用户执行下列步骤：
 
 ### 3.1. 下载软件
 
@@ -41,10 +41,11 @@
  
 #### 3.3.1 Ansible 配置
     
-   修改配置文件/etc/ansible/hosts, 增加mysql数据库服务器配置。
-   示例如下：
-
+   修改配置文件/etc/ansible/hosts, 增加mysql数据库服务器配置。 示例如下：
+   
    ```
+   vi /etc/ansible/hosts
+   
    [mysqldbserv]
    10.13.1.103  ansible_user=root ansible_password=password
    ```
@@ -59,12 +60,15 @@
    
    如果是通过无密码ssh访问方式，则需要修改/etc/ansible/ansible.cfg, 并设置私钥文件。
    示例如下：
+   
+   vi /etc/ansible/ansible.cfg
+   
    private_key_file=/root/.ssh/id_rsa
    
    如果RSA密钥对没有，可以运行如下命令：
    ssl-keygen -t rsa
    
-   具体过程请参考以下链接：
+   具体过程请参考以下链接：
    https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s3-openssh-rsa-keys-v2.html
    ```
    
