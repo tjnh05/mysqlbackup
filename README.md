@@ -68,7 +68,7 @@
    如果RSA密钥对没有，可以运行如下命令：
    ssl-keygen -t rsa
    
-   具体过程请参考以下链接：
+   具体过程请参考以下链接：
    https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s3-openssh-rsa-keys-v2.html
    ```
    
