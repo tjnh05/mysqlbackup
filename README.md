@@ -53,6 +53,7 @@
    把IP地址10.13.1.103修改成目标mysql数据库服务器的IP地址或域名
     
    ansible_user设置为root 
+   
    ansible_password修改为ansible_user对应用户的密码
    
    ```
