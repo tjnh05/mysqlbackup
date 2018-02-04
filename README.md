@@ -98,7 +98,7 @@
    datadir: "/data/mysql"
    
    #备份保存天数，陈旧的备份将被删除
-   xpired_days: 15
+   expired_days: 15
    ```
    
 ### 3.4. 安装软件到目标mysql主机
