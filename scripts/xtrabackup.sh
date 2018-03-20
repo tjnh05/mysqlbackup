@@ -1,7 +1,7 @@
 #! /bin/bash
 # Install softwares in remote MYSQL database host.
 # written by bodhi wang
-# bodwang@deloitte.com.cn
+# jyxz5@qq.com
 # Dec 2017
 
 SCRIPT_HOME=~/mysqlbackup/scripts/
