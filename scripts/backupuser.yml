@@ -1,7 +1,7 @@
 ---
 # Create backup user in remote MYSQL database.
 # written by bodhi wang
-# bodwang@deloitte.com.cn
+# jyxz5@qq.com
 # Dec 2017
 - hosts: mysqldbserv
   become: yes
