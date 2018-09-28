@@ -22,6 +22,9 @@
      yum:
        name: "http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm"
        state: present
+   - name: Make cache for yum
+     command: yum makecache
+     
    - name: Install XtraBackup
      yum: name=percona-xtrabackup-24 state=present
    - name: Install rsync
