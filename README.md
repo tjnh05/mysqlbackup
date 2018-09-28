@@ -82,7 +82,7 @@
    
 #### 3.3.3 设置目标mysql数据库备份用户和密码
     
-   修改配置文件~/mysqlbackup/scripts/dbvars.yml。
+   修改配置文件~/mysqlbackup/scripts/dbavars.yml。
    ```
    #目标mysql数据库的备份用户
    backup_user: backup
